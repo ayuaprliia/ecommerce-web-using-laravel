@@ -1,0 +1,30 @@
+name: Laravel CI/CD with Docker
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+
+    - name: Install Composer Dependencies
+      run: composer install --no-scripts --no-autoloader --no-progress --no-suggest --no-interaction
+
+    - name: Build Docker Image
+      run: docker build -t ayuaprliia/ecommerce-web-using-laravel .
+
+    - name: Push Docker Image
+      run: |
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        docker push ayuaprliia/ecommerce-web-using-laravel
