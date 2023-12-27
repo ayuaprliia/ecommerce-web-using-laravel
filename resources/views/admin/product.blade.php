@@ -3,25 +3,7 @@
   <head>
 
   @include('admin.css')
-
-<style type="text/css">
-
-    .title 
-    {
-        color:purple; 
-        padding-top: 25px; 
-        font-size: 75px;
-    }
-
-    label
-    {
-      display: inline-block;
-      width: 200px;
-    }
-
-
-</style>
-
+  
   </head>
   <body>
 
@@ -32,72 +14,97 @@
       @include('admin.sidebar')
 
         <!-- partial -->
-
-        <div class="container-fluid page-body-wrapper">
-
-            <div class="container" align="center">
-                <h1 class="title">ADD NEW PRODUCT</h1>
-
-        @if(session()->has('message'))
-
-        <div class="alert alert-success">
         
-        <button type="button" class="clos" data-dismiss="alert"></button>
+        <!-- partial -->
+        
+        <div class="main-panel">
+            <div class="content-wrapper">
 
-        {{session()->get('message')}}
+            @if(session()->has('message'))
 
-        </div>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                {{session()->get('message')}}
+            </div>    
 
         @endif
 
-        <form action="{{url('uploadproduct')}}" method="post" enctype="multipart/form-data">
 
-        @csrf
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">ADD PRODUCT</h4>
+                        <p class="card-description"> Add new products </p>
 
-            <div style="padding:15px;">
-                <label>Product Title</label>
+                        <form class="forms-sample" action="{{url('/add_product')}}" method="post" enctype="multipart/form-data">
+                       
+                        @csrf
+                        
+                        <div class="form-group">
+                        <label for="exampleInputName1">Product Title</label>
+                        <input type="text" class="form-control" name="title" placeholder="Write a title" required="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="exampleInputName1">Product Description</label>
+                        <input type="text" class="form-control" name="description"  placeholder="Write a description" required="">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="exampleInputName1">Product Price</label>
+                        <input type="number" class="form-control" name="price"  placeholder="Write a product price" required="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="exampleInputName1">Product Quantity</label>
+                        <input type="number" min="0" class="form-control" name="quantity"  placeholder="Product Quantity" required="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="exampleSelectGender">Product Category</label>
+                        <select class="form-control" name="category" required="">
+                            <option value="" selected disabled>Add a category here</option>
+                            
+                            @foreach($category as $category)
+                            
+                            <option value="{{$category->category_name}}</option>">{{$category->category_name}}</option>
 
-                <input style="color:black;" type="text" name="title" placeholder="Give a product title" required="">
-            </div>
+                            @endforeach
 
-            <div style="padding:15px;">
-                <label>Price</label>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>File upload</label>
+                        <input type="file" name="image" class="file-upload-default" required="">
+                        <div class="input-group col-xs-12">
+                            <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                            <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-gradient-primary" type="button" style="background: linear-gradient(45deg, #b66dff, #8146ff);">Upload</button>
+                            </span>
+                        </div>
+                    </div>
 
-                <input style="color:black;" type="number" name="price" placeholder="Give a price" required="">
-            </div>
+                        <button type="submit" class="btn btn-gradient-primary me-2" style="background: linear-gradient(45deg, #b66dff, #8146ff);">Submit</button>
+                        <button class="btn btn-light">Cancel</button>
+                    
+                    </form>
+                  </div>
+                </div>
+              </div>
 
-            <div style="padding:15px;">
-                <label>Description</label>
+        @include('admin.script')
 
-                <input style="color:black;" type="text" name="des" placeholder="Give a description" required="">
-            </div>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+      $('.file-upload-browse').on('click', function() {
+        $('input[type="file"]').click();
+      });
 
-            <div style="padding:15px;">
-                <label>Quantity</label>
-
-                <input style="color:black;" type="text" name="quantity" placeholder="Product Quantity" required="">
-            </div>
-
-            <div style="padding:15px;">
-                <input type="file" name="file">
-            </div>
-
-            <div style="padding: 15px;">
-                <button class="btn btn-success" type="submit" style="background-color: #4CAF50; color: white; border: 1px solid #4CAF50;"> 
-                    <i class="fas fa-check"></i> Submit
-                </button>
-            </div>
-
-        </form>
-
-
-            </div>
-
-        </div>
-
-          <!-- partial -->
-
-          @include('admin.script')
+      $('input[type="file"]').change(function() {
+        $('.file-upload-info').val(this.files[0].name);
+      });
+    </script>
 
   </body>
 </html>
