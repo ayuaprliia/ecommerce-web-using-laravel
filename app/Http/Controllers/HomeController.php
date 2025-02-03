@@ -173,7 +173,6 @@ public function add_order(Request $request)
         foreach ($data as $item)
         {
             $order = new Order;
-            // sesuaikan dengan kolom-kolom yang sesuai dalam tabel order
             $order->name = $item->name;
             $order->email = $item->email;
             $order->phone = $item->phone;
