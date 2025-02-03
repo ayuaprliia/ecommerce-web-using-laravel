@@ -44,8 +44,6 @@ class AdminController extends Controller
         return view('admin.update_category', compact('data'));
     }
 
-
-
     public function update_category_confirm(Request $request, $id)
     {
         $data=category::find($id);
@@ -67,18 +65,12 @@ class AdminController extends Controller
         return view('admin.category', compact('data'));
     }
 
-
-
-
-
     // PRODUCT
-    
     public function view_product()
     {
         $category = Category::all();
         return view('admin.product', compact('category'));
     }
-
     
     public function add_product(Request $request)
     {
@@ -153,7 +145,6 @@ class AdminController extends Controller
     {
         $searchProduct = $request->input('search_product');
     
-        // Query sesuai dengan kebutuhan Anda
         $product = Product::where('title', 'like', '%' . $searchProduct . '%')
             ->orWhere('description', 'like', '%' . $searchProduct . '%')
             ->get();
