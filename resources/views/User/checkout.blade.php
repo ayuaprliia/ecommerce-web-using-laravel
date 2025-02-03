@@ -178,22 +178,20 @@
                 });
             });
 
-// Ambil data dari database menggunakan AJAX
+// get data from database using AJAX
 $.ajax({
     type: "GET",
-    url: "/get-customer-data", // Ganti dengan URL atau endpoint yang sesuai
+    url: "/get-customer-data", 
     success: function (customerData) {
-        // customerData berisi data yang diambil dari database
+        // customerData 
         var customerName = customerData.name;
         var customerAddress = customerData.address;
         var customerPhone = customerData.phone;
 
-        // Sekarang Anda dapat menggunakan data tersebut sesuai kebutuhan Anda
         console.log("Nama: " + customerName);
         console.log("Alamat: " + customerAddress);
         console.log("Nomor Telepon: " + customerPhone);
 
-        // Lanjutkan dengan logika atau tindakan lain yang Anda perlukan
     },
     error: function (error) {
         console.error("Error fetching customer data:", error);
