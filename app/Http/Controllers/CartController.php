@@ -17,7 +17,6 @@ class CartController extends Controller
     $cartItem = new Cart();
     $cartItem->product_id = $itemId;
     $cartItem->quantity = $quantity;
-    // Set other fields as needed
     $cartItem->save();
 
     return response()->json(['success' => true]);
