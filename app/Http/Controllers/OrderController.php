@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Order;
-use App\Models\Cart; // Sesuaikan dengan model Cart yang sesuai dengan struktur tabel Anda
+use App\Models\Cart; 
 use Midtrans\Config;
 use Midtrans\Snap;
 
@@ -14,9 +13,7 @@ class OrderController extends Controller
     public function checkout(Request $request)
     {
         // Dapatkan data produk dari cart
-        $cartItem = Cart::find($request->input('cart_id')); // Sesuaikan dengan kolom yang sesuai
-
-        // Pastikan item di cart ditemukan
+        $cartItem = Cart::find($request->input('cart_id')); 
         if (!$cartItem) {
             return redirect()->back()->with('error', 'Item not found in the cart.');
         }
@@ -29,7 +26,6 @@ class OrderController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
-            // Tambahkan kolom-kolom lain yang diperlukan
         ]);
 
         // Set konfigurasi Midtrans
@@ -38,7 +34,7 @@ class OrderController extends Controller
         Config::$isSanitized = true;
         Config::$is3ds = true;
 
-        // Buat parameter transaksi
+        // parameter transaksi
         $params = [
             'transaction_details' => [
                 'order_id' => $order->id,
@@ -49,20 +45,15 @@ class OrderController extends Controller
                 'email' => $request->input('email'),
                 'phone' => $request->input('phone'),
             ],
-            // Tambahkan parameter lain sesuai kebutuhan.
         ];
 
-        // Dapatkan Snap Token
+        // Snap Token
         try {
             $snapToken = Snap::getSnapToken($params);
-
-            // Kirim token dan data order ke view checkout
             return view('checkout', compact('snapToken', 'order'));
         } catch (\Exception $e) {
-            // Log pesan kesalahan
+            // Log error message
             Log::error('Midtrans API Error: ' . $e->getMessage());
-
-            // Tampilkan pesan kesalahan kepada pengguna atau lakukan tindakan yang sesuai
             return redirect()->back()->with('error', 'Midtrans API error: ' . $e->getMessage());
         }
     }
